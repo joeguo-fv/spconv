@@ -8,11 +8,10 @@ on:
 jobs:
 
   build:
-    # needs: build-windows
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10'] # this version is only used for upload.
+        python-version: ['3.10']
         cuda-version: ['121']
 
     steps:
@@ -58,3 +57,18 @@ jobs:
            -e SPCONV_PYTHON_LIST=${{env.PYTHON_VERSION}} \
            -e BOOST_ROOT=/io/third_party/boost/$BOOST_VERSION \
            -v `pwd`:/io $DOCKER_IMAGE bash -c "source /etc/bashrc && /io/tools/build-wheels.sh"
+
+      - name: Find wheel file
+        id: find-wheel
+        run: |
+          WHEEL_PATH=$(find dist -name "*.whl" | head -n 1)
+          echo "WHEEL_PATH=$WHEEL_PATH" >> $GITHUB_ENV
+          echo "WHEEL_NAME=$(basename $WHEEL_PATH)" >> $GITHUB_ENV
+          echo "Found wheel: $WHEEL_PATH"
+
+      - name: Upload wheel as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.WHEEL_NAME }}
+          path: ${{ env.WHEEL_PATH }}
+          retention-days: 7
