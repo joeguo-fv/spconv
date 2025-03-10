@@ -42,7 +42,7 @@ jobs:
           python -m pip install --upgrade pip twine wheel
           python -m pip install pytest setuptools
           mkdir -p third_party
-          wget https://boostorg.jfrog.io/artifactory/main/release/1.77.0/source/$BOOST_VERSION.zip -O third_party/boost.zip
+          wget https://archives.boost.io/release/1.77.0/source/$BOOST_VERSION.zip -O third_party/boost.zip
           unzip third_party/boost.zip -d third_party/boost
 
       - name: Build a cuda wheel
