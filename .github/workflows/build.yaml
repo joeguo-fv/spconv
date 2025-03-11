@@ -67,7 +67,7 @@ jobs:
           echo "Found wheel: $WHEEL_PATH"
 
       - name: Upload wheel as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.1
         with:
           name: ${{ env.WHEEL_NAME }}
           path: ${{ env.WHEEL_PATH }}
